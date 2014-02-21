@@ -6,6 +6,9 @@
 
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no' />
 <script src='https://api.tiles.mapbox.com/mapbox.js/v1.6.1/mapbox.js'></script>
+
+<script src='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-hash/v0.2.1/leaflet-hash.js'></script>
+
 <link href='https://api.tiles.mapbox.com/mapbox.js/v1.6.1/mapbox.css' rel='stylesheet' />
 
 <style>
@@ -18,7 +21,11 @@
 
 <div id='map'></div>
 <script>
-L.mapbox.map('map', 'fcc.Unavail_20111007_2,fcc.Unavail_HI,fcc.Unavail_AK');
+
+var map = L.mapbox.map('map', 'fcc.map-kzt95hy6,fcc.ABC-Coalition-FTTP-Cost-Model,fcc.Unavail_HI,fcc.Unavail_AK', {legendControl: false, attributionControl: false})
+            .setView([38.82, -94.96], 4);
+var hash = L.hash(map);            
+
 </script>
 
 
