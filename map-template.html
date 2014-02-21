@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset=utf-8 />
+<title>Map Template</title>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no' />
+<script src='https://api.tiles.mapbox.com/mapbox.js/v1.6.1/mapbox.js'></script>
+<script src='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-hash/v0.2.1/leaflet-hash.js'></script>
+<link href='https://api.tiles.mapbox.com/mapbox.js/v1.6.1/mapbox.css' rel='stylesheet' />
+<style>
+body { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; font-size: 12px; margin:0; padding:0; }
+section { border-bottom: 1px solid #CCC; }
+h1 { font-size: 22px; margin: 0; }
+h2 { font-size: 16px; }
+h3 { font-size: 14px; }
+p, dt, dd { line-height: 18px; }
+dt, dd { min-height: 20px }
+dt { font-weight: bold; }
+.dl-inline dt { clear: left; float: left; overflow: hidden; }
+.dl-inline dd { margin-left: 140px; }
+.help-inline { color: #444; font-style: italic; font-weight: normal; }
+.table-data { border-collapse: collapse; }
+.table-data th { background-color: #CCC; }
+.table-data th, .table-data td { padding: 5px; }
+.table-data th:first-child { text-align: left; }
+.table-data td:first-child { width: 140px; }
+.table-data caption { font-weight: bold; margin-bottom: 5px; text-align: left; }
+.table-legend td:nth-child(n+2) { text-align: center; }
+#map { left: 0; position:absolute; top:0; bottom:0; width: 69%; }
+#map-sidebar { position: absolute; right: 0; top: 0; width: 31%; }
+#map-summary { padding: 10px; }
+#map-legend { background-color: #FFF; border: 1px solid #CCC; bottom: 10px; font-family: Arial, Helvetica, sans-serif; font-size: 12px; padding: 5px; position: absolute; right: 0; }
+.map-desc { font-size: 12px; }
+.panel { border: 1px solid #CCCCCC; max-height: 200px; padding: 5px; }
+.panel-scroll { overflow-y: auto; }
+</style>
+</head>
+<body>
+<div id="map"></div>
+<div id="map-sidebar">
+    <div id="map-summary">
+        <h1>ABC Coalition<br> FTTP Cost Model</h1>
+        <p class="map-desc">Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+        <div id="map-tooltip">
+            <section>
+                <h2>Location</h2>
+                <dl id="list-stats" class="dl-inline">
+                    <dt>City:</dt>
+                    <dd><span id="stat-city">Alexandria</span></dd>
+                    <dt>State:</dt>
+                    <dd><span id="stat-state">VA</span></dd>
+                </dl>
+            </section>
+            <section>
+                <h3>Demographics</h3>
+                <dl id="list-stats" class="dl-inline">
+                    <dt>Total area (sq. miles):</dt>
+                    <dd><span id="stat-totalArea">3,856,163</span></dd>
+                    <dt>Housing Units:</dt>
+                    <dd><span id="stat-houseUnits">321,324,979</span></dd>
+                    <dt>Population:</dt>
+                    <dd><span id="stat-pop">138,505,691</span></dd>
+                </dl>
+            </section>
+            <section id="sect-speedTest">
+                <h3>Speed Test</h3>
+                <table class="table-data">
+                    <thead>
+                        <tr>
+                            <th>Category</th>
+                            <th>Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><abbr title="Maximum">Max.</abbr> Download Speed</td>
+                            <td><span id="stat-download">99</span> <span class="help-inline">Mbps</span></td>
+                        </tr>
+                        <tr>
+                            <td><abbr title="Maximum">Max.</abbr> Upload Speed</td>
+                            <td><span id="stat-upload">50</span> <span class="help-inline">Mbps</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+        </div>
+    </div>
+</div>
+<div id="map-legend">
+    <table class="table-legend table-data">
+        <caption>
+        Monthly Cost
+        </caption>
+        <thead>
+            <tr>
+                <th>&nbsp;</th>
+                <th>Served</th>
+                <th>Unserved</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Less than $75 per location</td>
+                <td><span style="color:#97E3E1">▉</span></td>
+                <td><span style="color:#0000AB">▉</span></td>
+            </tr>
+            <tr>
+                <td>$75 to $150 per location</td>
+                <td><span style="color:#9ea1bf">▉</span></td>
+                <td><span style="color:#464855">▉</span></td>
+            </tr>
+            <tr>
+                <td>$150 to $300 per location</td>
+                <td><span style="color:#97bed0">▉</span></td>
+                <td><span style="color:#7593a1">▉</span></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script> 
+<script>
+
+// Setup map
+var map = L.mapbox.map('map', 'fcc.map-kzt95hy6,fcc.ABC-Coalition-FTTP-Cost-Model,fcc.Unavail_HI,fcc.Unavail_AK', {legendControl: false, attributionControl: false, gridControl: false})
+            .setView([38.82, -94.96], 4);
+var hash = L.hash(map);      
+
+// Display the map tooltip in the sidebar
+map.gridLayer.on('mousemove',function(o) {
+	   
+   console.log(o);
+   
+   // Populate location and download/upload stats (dummy data from map)
+	$('#stat-city').text(o.data.cty_name);
+	$('#stat-state').text(o.data.state_name);		
+	$('#stat-download').text(o.data.lownotserved);
+	$('#stat-upload').text(o.data.lowserved);
+	
+	// Populate demographics stats (generated dummy data)
+	$('#stat-totalArea').text(formatComma(Math.floor((Math.random()*1000000)+1000)));
+	$('#stat-houseUnits').text(formatComma(Math.floor((Math.random()*1000000)+1000)));
+	$('#stat-pop').text(formatComma(Math.floor((Math.random()*1000000)+1000)));
+
+});      
+
+// Format dummy data with commas
+function formatComma(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+// Position the map legend when the window is resized
+$(window).on('resize', function(e) {
+    var width = ($('#map-sidebar').width()/2) - ($('#map-legend').width()/2) - 5;
+	$('#map-legend').css('right', width);
+}).resize();
+
+</script>
+</body>
+</html>
