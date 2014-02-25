@@ -44,7 +44,7 @@ dt { font-weight: bold; }
         <div id="map-tooltip">
             <section>
                 <h2>Selected Tract: <span id="stat-tract">---------</span></h2>
-                <dl id="list-stats" class="dl-inline">
+                <dl class="dl-inline">
                     <dt>County:</dt>
                     <dd><span id="stat-cnty">------</span>, <span id="stat-state">--</span></dd>
                     <dt>Total Locations:</dt>
@@ -55,7 +55,7 @@ dt { font-weight: bold; }
             </section>
             <section>
                 <h3>Number of Locations >$50 per month per location</h3>
-                <dl id="list-stats" class="dl-inline">
+                <dl id="dl-numLocs" class="dl-inline">
                     <dt>PC Locations Between: </dt>
                     <dd><span id="stat-pclocbtwn">-----</span></dd>
                     <dt>ROR Locations Between: </dt>
@@ -171,29 +171,34 @@ var hash = L.hash(map);
 // Display the map tooltip in the sidebar
 map.gridLayer.on('mousemove',function(o) {
 	   
-   console.log(o);
-   
-   // Populate location other stats (teaser fields from map)
-	$('#stat-cnty').text(o.data.county_name);
-	$('#stat-state').text(o.data.state);		
-	$('#stat-tract').text(o.data.tract);
-	$('#stat-totloc').text(o.data.total_locations);
-	$('#stat-totsup').text(o.data.total_annual_support);
+	var data;
+
+	if (o.data != undefined) {
+	   data = o.data;   
+	   
+		// Populate location other stats (teaser fields from map)
+		$('#stat-cnty').text(data.county_name);
+		$('#stat-state').text(data.state);		
+		$('#stat-tract').text(data.tract);
+		$('#stat-totloc').text(data.total_locations);
+		$('#stat-totsup').text(formatComma(data.total_annual_support));
+		
+		// Additional Cost Stats (teaser fields from map)		
+		$('#stat-pclocbtwn').text(data.pc_locations_between);
+		$('#stat-rorlocbtwn').text(data.ror_locations_between);
+		$('#stat-pclocabv').text(data.pc_locations_above_ttc);
+		$('#stat-rorlocabv').text(data.ror_locations_above_ttc);
+		$('#stat-pcannsup').text(formatComma(data.pc_annual_support));
+		$('#stat-rorannsup').text(formatComma(data.ror_annual_support));
 	
-	// Additional Cost Stats (teaser fields from map)
 	
-	$('#stat-pclocbtwn').text(o.data.pc_locations_between);
-	$('#stat-rorlocbtwn').text(o.data.ror_locations_between);
-	$('#stat-pclocabv').text(o.data.pc_locations_above_ttc);
-	$('#stat-rorlocabv').text(o.data.ror_locations_above_ttc);
-	$('#stat-pcannsup').text(o.data.pc_annual_support);
-	$('#stat-rorannsup').text(o.data.ror_annual_support);
-	
-	
-	// Populate demographics stats (generated dummy data)
-	$('#stat-totalArea').text(formatComma(Math.floor((Math.random()*1000000)+1000)));
-	$('#stat-houseUnits').text(formatComma(Math.floor((Math.random()*1000000)+1000)));
-	$('#stat-pop').text(formatComma(Math.floor((Math.random()*1000000)+1000)));
+	} else { // Reset the text labels
+		$('#stat-tract').text('---------');
+		$('#stat-cnty').text('------');
+		$('#stat-state, #stat-pcannsup, #stat-rorannsup').text('--');
+		$('#stat-totloc, #stat-totsup').text('----');
+		$('#dl-numLocs').find('span').text('-----');	
+	}
 
 });      
 
