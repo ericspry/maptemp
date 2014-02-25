@@ -17,7 +17,7 @@ p, dt, dd { line-height: 18px; }
 dt, dd { min-height: 20px }
 dt { font-weight: bold; }
 .dl-inline dt { clear: left; float: left; overflow: hidden; }
-.dl-inline dd { margin-left: 140px; }
+.dl-inline dd { margin-left: 160px; }
 .help-inline { color: #444; font-style: italic; font-weight: normal; }
 .table-data { border-collapse: collapse; }
 .table-data th { background-color: #CCC; }
@@ -43,14 +43,10 @@ dt { font-weight: bold; }
         <p class="map-desc">Zoom in to display tract level details on mouseover below.</p>
         <div id="map-tooltip">
             <section>
-                <h2>Selected Tract</h2>
+                <h2>Selected Tract: <span id="stat-tract">---------</span></h2>
                 <dl id="list-stats" class="dl-inline">
                     <dt>County:</dt>
-                    <dd><span id="stat-cnty">------</span></dd>
-                    <dt>State:</dt>
-                    <dd><span id="stat-state">--</span></dd>
-                    <dt>Tract:</dt>
-                    <dd><span id="stat-tract">---------</span></dd>
+                    <dd><span id="stat-cnty">------</span>, <span id="stat-state">--</span></dd>
                     <dt>Total Locations:</dt>
                     <dd><span id="stat-totloc">----</span></dd>
                     <dt>Total Support:</dt>
