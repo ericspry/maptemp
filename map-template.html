@@ -13,6 +13,8 @@ section { border-bottom: 1px solid #CCC; }
 h1 { font-size: 22px; margin: 0; }
 h2 { font-size: 16px; margin-bottom: 3px; }
 h3 { font-size: 14px; }
+a { color: #115B8A; text-decoration: none; }
+a:hover { text-decoration: underline; }
 p, dt, dd { line-height: 18px; }
 dt, dd { min-height: 20px }
 dt { font-weight: bold; }
@@ -25,21 +27,33 @@ dt { font-weight: bold; }
 .table-data th { background-color: #CCC; }
 .table-data th, .table-data td { padding: 5px; }
 .table-data th:first-child { text-align: left; }
-caption { font-weight: bold; margin-bottom: 5px; text-align: left; }
+caption { font-weight: bold; padding: 3px 0 5px; }
 .table-data td:first-child { width: 140px; }
 .table-data th sup { font-size: 9px; }
 tfoot { border-top: 2px solid #D3D3D3; }
 tfoot sup { margin-right: 2px; position: relative; top: 2px; }
-.table-legend td { font-size: 11px; padding: 5px 0 5px 5px; }
+.table-legend th, .table-legend td { font-size: 11px; }
+.table-legend td { padding: 5px 0 5px 5px; }
 .table-legend td:nth-child(n+2) { text-align: center; }
 #map { left: 0; position:absolute; top:0; bottom:0; width: 69%; }
 #map-sidebar { position: absolute; right: 0; top: 0; width: 31%; }
 #map-summary { padding: 10px; }
 #map-legend { background-color: #FFF; border: 1px solid #CCC; bottom: 10px; font-family: Arial, Helvetica, sans-serif; font-size: 12px; padding: 5px; position: absolute; right: 0; }
+.lnk-togLegend { bottom: 10px; display: none; float: right; margin-top: 10px; position: absolute; right: 12px; }
 .key-symbol { opacity: 0.75; }
 .map-desc { font-size: 12px; }
 .panel { border: 1px solid #CCCCCC; max-height: 200px; padding: 5px; }
 .panel-scroll { overflow-y: auto; }
+.hide { display: none; }
+
+@media only screen and (max-height: 500px) {
+.lnk-togLegend { display: block; }
+#map { width: 65%; }
+#map-sidebar { width: 35%; }
+#map-legend { display: none; border: none; box-shadow: 0px 0px 10px #CCC; }
+#map-legend .lnk-togLegend { bottom: 5px; }
+.table-legend { margin-bottom: 15px; }
+}
 </style>
 </head>
 <body>
@@ -53,9 +67,9 @@ tfoot sup { margin-right: 2px; position: relative; top: 2px; }
                 <h2>Selected Tract: <span id="stat-tract">---------</span></h2>
                 (County: <span id="stat-cnty">------</span>, <span id="stat-state">--</span>)
                 <dl class="dl-statTract dl-inline">
-                    
                     <dt>Locations Unserved by an Unsubsidized Provider: </dt>
-                    <dd><br><span id="stat-totloc">----</span></dd>
+                    <dd><br>
+                        <span id="stat-totloc">----</span></dd>
                     <dt>Total Annual Support:</dt>
                     <dd>$ <span id="stat-totsup">----</span></dd>
                     <dt>- Price cap:</dt>
@@ -76,11 +90,15 @@ tfoot sup { margin-right: 2px; position: relative; top: 2px; }
                     <dt><abbr title="Rate-of-return">ROR</abbr> Locations Above: </dt>
                     <dd><span id="stat-rorlocabv">-----</span></dd>
                 </dl>
-            </section>            
+            </section>
         </div>
+        
+        
     </div>
+    
 </div>
-<div id="map-legend">
+<a class="lnk-togLegend" href="#href">Show Map Legend</a> 
+<div id="map-legend">	
     <table class="table-legend table-data">
         <caption>
         Model Landscape
@@ -93,38 +111,38 @@ tfoot sup { margin-right: 2px; position: relative; top: 2px; }
             </tr>
         </thead>
         <tfoot>
-<tr>
-            	<td colspan=3><sup>1</sup>SERVED:  Census blocks are considered served by an unsubsidized provider if they report 3 Mbps downstream / 768 kbps upstream Internet access in SBI round 7 data and report voice connections on FCC Form 477.
-</td>
+            <tr>
+                <td colspan=3><sup>1</sup>SERVED:  Census blocks are considered served by an unsubsidized provider if they report 3 Mbps downstream / 768 kbps upstream Internet access in SBI round 7 data and report voice connections on FCC Form 477. </td>
             </tr>
-</tfoot>
+        </tfoot>
         <tbody>
             <tr>
-                <td style="white-space: nowrap;"><strong>Above</strong>
-                  <br>Price cap: &ge; $183.53
-                  <br>Rate-of-return: &ge; $300</td>
+                <td style="white-space: nowrap;"><strong>Above</strong> <br>
+                    Price cap: &ge; $183.53 <br>
+                    Rate-of-return: &ge; $300</td>
                 <td><span class="key-symbol" style="color:#FFACA1">▉</span></td>
                 <td><span class="key-symbol" style="color:#DC4E3D">▉</span></td>
             </tr>
             <tr>
-                <td style="white-space: nowrap;"><strong>Between</strong>
-                <br>Price cap: &gt; $50 and &lt; $183.53
-                <br>Rate-of-return: &gt; $50 and &lt; $300</td>
+                <td style="white-space: nowrap;"><strong>Between</strong> <br>
+                    Price cap: &gt; $50 and &lt; $183.53 <br>
+                    Rate-of-return: &gt; $50 and &lt; $300</td>
                 <td><span class="key-symbol" style="color:#C4F489">▉</span></td>
                 <td><span class="key-symbol" style="color:#28925B">▉</span></td>
             </tr>
             <tr>
-                <td style="white-space: nowrap;"><strong>Below</strong>
-                <br>Price cap: &le; $50
-                <br>Rate-of-return: &le; $50</td>
+                <td style="white-space: nowrap;"><strong>Below</strong> <br>
+                    Price cap: &le; $50 <br>
+                    Rate-of-return: &le; $50</td>
                 <td><span class="key-symbol" style="color:#FBDA62">▉</span></td>
                 <td><span class="key-symbol" style="color:#D99442">▉</span></td>
-            </tr>            
-        </tbody> 
+            </tr>
+        </tbody>
     </table>
+    <a class="lnk-togLegend" href="#href">Close</a> 
 </div>
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-<script>window.jQuery || document.write('<script src="js/libs/jquery-1.11.0.min.js"><\/script>')</script>  
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script> 
+<script>window.jQuery || document.write('<script src="js/libs/jquery-1.11.0.min.js"><\/script>')</script> 
 <script>
 
 // Setup map
@@ -176,6 +194,20 @@ $(window).on('resize', function(e) {
     var width = ($('#map-sidebar').width()/2) - ($('#map-legend').width()/2) - 5;
 	$('#map-legend').css('right', width);
 }).resize();
+
+$('.lnk-togLegend').click(function(e) {
+	e.preventDefault();
+	$(this).hide('fast');
+	$("#map-legend").animate(
+		{width: [ "toggle", "swing" ],
+	    height: [ "toggle", "swing" ],
+	    opacity: "toggle"},
+		350, 
+		function(){
+			$('.lnk-togLegend').show('fast');	
+		}
+	);	
+});		
 
 </script>
 </body>
