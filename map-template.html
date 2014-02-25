@@ -39,46 +39,51 @@ dt { font-weight: bold; }
 <div id="map"></div>
 <div id="map-sidebar">
     <div id="map-summary">
-        <h1>ABC Coalition<br> FTTP Cost Model</h1>
-        <p class="map-desc">Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+        <h1>CAM Experiment Cost Map</h1>
+        <p class="map-desc">Zoom in to display tract level details on mouseover below.</p>
         <div id="map-tooltip">
             <section>
-                <h2>Location</h2>
+                <h2>Selected Tract</h2>
                 <dl id="list-stats" class="dl-inline">
-                    <dt>City:</dt>
-                    <dd><span id="stat-city">Alexandria</span></dd>
+                    <dt>County:</dt>
+                    <dd><span id="stat-cnty">------</span></dd>
                     <dt>State:</dt>
-                    <dd><span id="stat-state">VA</span></dd>
+                    <dd><span id="stat-state">--</span></dd>
+                    <dt>Tract:</dt>
+                    <dd><span id="stat-tract">---------</span></dd>
+                    <dt>Total Locations:</dt>
+                    <dd><span id="stat-totloc">----</span></dd>
+                    <dt>Total Support:</dt>
+                    <dd>$ <span id="stat-totsup">----</span></dd>
                 </dl>
             </section>
             <section>
-                <h3>Demographics</h3>
+                <h3>Number of Eligible Locations</h3>
                 <dl id="list-stats" class="dl-inline">
-                    <dt>Total area (sq. miles):</dt>
-                    <dd><span id="stat-totalArea">3,856,163</span></dd>
-                    <dt>Housing Units:</dt>
-                    <dd><span id="stat-houseUnits">321,324,979</span></dd>
-                    <dt>Population:</dt>
-                    <dd><span id="stat-pop">138,505,691</span></dd>
+                    <dt>PC Locations Between: </dt>
+                    <dd><span id="stat-pclocbtwn">-----</span></dd>
+                    <dt>ROR Locations Between: </dt>
+                    <dd><span id="stat-rorlocbtwn">-----</span></dd>
+                    <dt>PC Locations Above: </dt>
+                    <dd><span id="stat-pclocabv">-----</span></dd>
+                    <dt>ROR Locations Above: </dt>
+                    <dd><span id="stat-rorlocabv">-----</span></dd>
                 </dl>
             </section>
             <section id="sect-speedTest">
-                <h3>Speed Test</h3>
+                <h3>Annual Support</h3>
                 <table class="table-data">
                     <thead>
                         <tr>
-                            <th>Category</th>
-                            <th>Value</th>
+                            <th>Price Cap</th>
+                            <th>Rate of Return</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td><abbr title="Maximum">Max.</abbr> Download Speed</td>
-                            <td><span id="stat-download">99</span> <span class="help-inline">Mbps</span></td>
-                        </tr>
-                        <tr>
-                            <td><abbr title="Maximum">Max.</abbr> Upload Speed</td>
-                            <td><span id="stat-upload">50</span> <span class="help-inline">Mbps</span></td>
+                            <!-- <td><abbr title="Maximum">Max.</abbr> Download Speed</td> -->
+                            <td>$ <span id="stat-pcannsup">--</span></td>
+                            <td>$ <span id="stat-rorannsup">--</span></td>
                         </tr>
                     </tbody>
                 </table>
@@ -121,7 +126,7 @@ dt { font-weight: bold; }
 <script>
 
 // Setup map
-var map = L.mapbox.map('map', 'fcc.map-kzt95hy6,fcc.ABC-Coalition-FTTP-Cost-Model,fcc.Unavail_HI,fcc.Unavail_AK', {legendControl: false, attributionControl: false, gridControl: false})
+var map = L.mapbox.map('map', 'fcc.map-kzt95hy6,fcc.cni885mi,fcc.xoiara4i', {legendControl: false, attributionControl: false, gridControl: false})
             .setView([38.82, -94.96], 4);
 var hash = L.hash(map);      
 
@@ -130,11 +135,22 @@ map.gridLayer.on('mousemove',function(o) {
 	   
    console.log(o);
    
-   // Populate location and download/upload stats (dummy data from map)
-	$('#stat-city').text(o.data.cty_name);
-	$('#stat-state').text(o.data.state_name);		
-	$('#stat-download').text(o.data.lownotserved);
-	$('#stat-upload').text(o.data.lowserved);
+   // Populate location other stats (teaser fields from map)
+	$('#stat-cnty').text(o.data.county_name);
+	$('#stat-state').text(o.data.state);		
+	$('#stat-tract').text(o.data.tract);
+	$('#stat-totloc').text(o.data.total_locations);
+	$('#stat-totsup').text(o.data.total_annual_support);
+	
+	// Additional Cost Stats (teaser fields from map)
+	
+	$('#stat-pclocbtwn').text(o.data.pc_locations_between);
+	$('#stat-rorlocbtwn').text(o.data.ror_locations_between);
+	$('#stat-pclocabv').text(o.data.pc_locations_above_ttc);
+	$('#stat-rorlocabv').text(o.data.ror_locations_above_ttc);
+	$('#stat-pcannsup').text(o.data.pc_annual_support);
+	$('#stat-rorannsup').text(o.data.ror_annual_support);
+	
 	
 	// Populate demographics stats (generated dummy data)
 	$('#stat-totalArea').text(formatComma(Math.floor((Math.random()*1000000)+1000)));
