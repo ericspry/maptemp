@@ -46,7 +46,7 @@ tfoot sup { margin-right: 2px; position: relative; top: 2px; }
 .panel-scroll { overflow-y: auto; }
 .hide { display: none; }
 
-@media only screen and (max-height: 500px) {
+@media only screen and (max-height: 768px) {
 .lnk-togLegend { display: block; }
 #map { width: 65%; }
 #map-sidebar { width: 35%; }
@@ -139,7 +139,7 @@ tfoot sup { margin-right: 2px; position: relative; top: 2px; }
             </tr>
         </tbody>
     </table>
-    <a class="lnk-togLegend" href="#href">Close</a> 
+    <a class="lnk-togLegend" href="#void">Close</a> 
 </div>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script> 
 <script>window.jQuery || document.write('<script src="js/libs/jquery-1.11.0.min.js"><\/script>')</script> 
@@ -197,14 +197,17 @@ $(window).on('resize', function(e) {
 
 $('.lnk-togLegend').click(function(e) {
 	e.preventDefault();
-	$(this).hide('fast');
 	$("#map-legend").animate(
 		{width: [ "toggle", "swing" ],
 	    height: [ "toggle", "swing" ],
 	    opacity: "toggle"},
 		350, 
-		function(){
-			$('.lnk-togLegend').show('fast');	
+		function(){ console.log($(this));
+			if ($(this).is(':visible')) {
+			    $('.lnk-togLegend').eq(0).hide();	
+			} else {
+				$('.lnk-togLegend').eq(0).show();
+			}	 
 		}
 	);	
 });		
